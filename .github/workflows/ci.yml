@@ -1,0 +1,48 @@
+# Reusable CI for FenFlash repos. Call from a repo workflow with:
+#   jobs:
+#     ci:
+#       uses: fenflash/.github/.github/workflows/ci.yml@main
+name: ci
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: "20"
+      run-contract-validation:
+        description: "Validate JSON against contracts/findings.schema.json"
+        type: boolean
+        default: false
+
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      - run: npm ci
+      - run: npm run lint --if-present
+      - run: npm test --if-present
+
+  # Guardrails that encode FenFlash's product-defining safety rules as required checks.
+  safety-invariants:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: read-scope safety (no 'remove' on read scopes)
+        run: npm run test:read-scope-invariant --if-present
+      - name: no-fear-upsell (monetization never gates/fear-frames findings)
+        run: npm run test:no-fear-upsell --if-present
+
+  contracts:
+    if: ${{ inputs.run-contract-validation }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+      - run: npx --yes ajv-cli validate -s contracts/findings.schema.json -d "contracts/*.example.json" --spec=draft2020
