@@ -2,12 +2,13 @@
 
 # 🦊 FenFlash
 
-**A house of fox-named, Cloudflare-native security tools that watch your edge so you don't have to.**
+**A security studio that solves real security problems — fast.**
 
 </div>
 
-The fennec fox thrives in the desert on the bare minimum. FenFlash builds security tooling on the
-same principle — *keep only the access, exposure, and surface you actually need.*
+Small, sharp, resourceful — like its namesake fox. FenFlash ships focused security tools, one
+problem at a time. We're not tied to a single platform or category; we go where the security
+problem is.
 
 ## Products
 
@@ -17,6 +18,7 @@ same principle — *keep only the access, exposure, and surface you actually nee
 | _Warren_ | Asset / identity / attack-surface graph | Reserved |
 | _Scavenge_ | Stale / orphaned-resource reclamation | Reserved |
 
-Forage runs in your own Cloudflare account — your credentials never leave your environment.
+Our first tool, **Forage**, runs in your own Cloudflare account — your credentials never leave your
+environment.
 
 → [fenfla.sh](https://fenfla.sh)
